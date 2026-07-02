@@ -62,11 +62,6 @@ class ExpressionTree:
         if node.val == 'u-': return -self._eval(node.right, vars_dict)
         l, r = self._eval(node.left, vars_dict), self._eval(node.right, vars_dict)
         return {'+': l+r, '-': l-r, '*': l*r, '/': l/r}[node.val]
-        if node.val == '/':
-            right_val = self._eval(node.right, vars_dict)
-            if right_val == 0:
-                raise ZeroDivisionError("Деление на ноль в выражении!")
-            return left_val / right_val
 
     def evaluate(self, vars_dict):
         return self._eval(self.root, vars_dict)

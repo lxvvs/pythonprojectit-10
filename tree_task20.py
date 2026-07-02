@@ -146,7 +146,7 @@ def main_menu():
                     print(f"Ошибка: {e}")
             if not expr:
                 print("Ошибка: Выражение не может быть пустым.")
-                    continue
+                continue
 
             # Проверка на недопустимые символы
             allowed = set("0123456789.+-*/()abcdefghijklmnopqrstuvwxyz")
@@ -165,12 +165,6 @@ def main_menu():
             if tree:
                 v_list = tree.get_variables()
                 v_dict = {}
-                try:
-                    val = input(f"Значение {v}: ").strip()
-                    v_dict[v] = float(val) # Если введут буквы вместо числа, упадет здесь
-                except ValueError:
-                    print(f"Ошибка: Значение переменной {v} должно быть числом.")
-                    # И тут нужно выйти из функции вычисления, чтобы не продолжать
                 try:
                     for v in v_list:
                         v_dict[v] = float(input(f"Значение {v}: ").strip())

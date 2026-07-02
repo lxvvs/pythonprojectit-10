@@ -62,6 +62,11 @@ class ExpressionTree:
         if node.val == 'u-': return -self._eval(node.right, vars_dict)
         l, r = self._eval(node.left, vars_dict), self._eval(node.right, vars_dict)
         return {'+': l+r, '-': l-r, '*': l*r, '/': l/r}[node.val]
+        if node.val == '/':
+            right_val = self._eval(node.right, vars_dict)
+            if right_val == 0:
+                raise ZeroDivisionError("Деление на ноль в выражении!")
+            return left_val / right_val
 
     def evaluate(self, vars_dict):
         return self._eval(self.root, vars_dict)
@@ -139,6 +144,15 @@ def main_menu():
                     print(f"Строковый вид: {tree}")
                 except Exception as e:
                     print(f"Ошибка: {e}")
+            if not expr:
+                print("Ошибка: Выражение не может быть пустым.")
+                    continue
+
+            # Проверка на недопустимые символы
+            allowed = set("0123456789.+-*/()abcdefghijklmnopqrstuvwxyz")
+            if not set(expr.replace(" ", "")).issubset(allowed):
+                print("Ошибка: Формула содержит недопустимые символы.")
+                continue
         elif choice == '2':
             if tree:
                 tree.simplify()
@@ -151,6 +165,12 @@ def main_menu():
             if tree:
                 v_list = tree.get_variables()
                 v_dict = {}
+                try:
+                    val = input(f"Значение {v}: ").strip()
+                    v_dict[v] = float(val) # Если введут буквы вместо числа, упадет здесь
+                except ValueError:
+                    print(f"Ошибка: Значение переменной {v} должно быть числом.")
+                    # И тут нужно выйти из функции вычисления, чтобы не продолжать
                 try:
                     for v in v_list:
                         v_dict[v] = float(input(f"Значение {v}: ").strip())
